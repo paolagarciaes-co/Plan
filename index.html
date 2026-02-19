@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karaoke Las Positivas 🎤</title>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a0030;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; font-family: 'Nunito', sans-serif; padding: 20px;
+  }
+  .card {
+    width: 440px;
+    background: linear-gradient(160deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff);
+    background-size: 300% 300%;
+    animation: gradShift 6s ease infinite;
+    border-radius: 32px; padding: 4px;
+    box-shadow: 0 0 60px #ff006e88, 0 0 120px #8338ec55;
+  }
+  @keyframes gradShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .inner {
+    background: #12001f; border-radius: 30px;
+    padding: 28px 26px 34px; position: relative; overflow: hidden;
+  }
+  .inner::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, #ff006e18 1px, transparent 1px);
+    background-size: 22px 22px; z-index: 0;
+  }
+  .stars { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .star {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.2; transform: scale(1); }
+    to   { opacity: 1; transform: scale(1.8); }
+  }
+  .content { position: relative; z-index: 1; }
+  .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff006e, #fb5607);
+    color: #fff; font-family: 'Boogaloo', cursive; font-size: 12px;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 5px 16px; border-radius: 100px; margin-bottom: 8px;
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%,100% { box-shadow: 0 0 20px #ff006e88; }
+    50%      { box-shadow: 0 0 40px #ff006ecc; }
+  }
+  .group-name {
+    font-family: 'Boogaloo', cursive; font-size: 46px; line-height: 1;
+    background: linear-gradient(135deg, #ffbe0b, #ff006e, #3a86ff, #ffbe0b);
+    background-size: 200% 200%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; animation: textShimmer 3s ease infinite; margin-bottom: 2px;
+  }
+  @keyframes textShimmer {
+    0%  { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100%{ background-position: 0% 50%; }
+  }
+  .presents { font-size: 12px; color: #ffffff77; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .main-title {
+    font-family: 'Boogaloo', cursive; font-size: 62px; line-height: 0.9; color: #fff;
+    text-shadow: 0 0 30px #ff006e, 0 0 60px #8338ec, 4px 4px 0 #ff006e;
+    animation: titlePulse 3s ease-in-out infinite; margin-bottom: 2px;
+  }
+  @keyframes titlePulse {
+    0%,100% { text-shadow: 0 0 30px #ff006e, 0 0 60px #8338ec, 4px 4px 0 #ff006e; }
+    50%      { text-shadow: 0 0 50px #ffbe0b, 0 0 100px #ff006e, 4px 4px 0 #fb5607; }
+  }
+  .mic-emoji {
+    font-size: 44px; display: inline-block;
+    animation: micBounce 1.2s ease-in-out infinite; margin-left: 6px; vertical-align: middle;
+  }
+  @keyframes micBounce {
+    0%,100% { transform: rotate(-10deg) scale(1); }
+    50%      { transform: rotate(10deg) scale(1.2); }
+  }
+  .illustration {
+    width: 100%; margin: 16px 0 12px; border-radius: 20px;
+    background: linear-gradient(180deg, #200040 0%, #0d0020 100%);
+    border: 2px solid #ff006e33; overflow: hidden;
+  }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .info-pill {
+    background: linear-gradient(135deg, #ffffff0f, #ffffff05);
+    border: 1px solid #ffffff22; border-radius: 16px; padding: 11px 13px;
+  }
+  .info-label { font-size: 9px; letter-spacing: 2px; color: #ff006e; text-transform: uppercase; font-weight: 700; margin-bottom: 3px; }
+  .info-value { font-family: 'Boogaloo', cursive; font-size: 20px; color: #fff; line-height: 1; }
+  .info-value.big {
+    font-size: 26px;
+    background: linear-gradient(135deg, #ffbe0b, #fb5607);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .note-ribbon {
+    background: linear-gradient(90deg, #8338ec22, #3a86ff22, #8338ec22);
+    border: 1px solid #8338ec44; border-radius: 14px;
+    padding: 11px 14px; text-align: center; margin-bottom: 14px;
+    font-size: 13px; color: #e0c7ff; font-weight: 700;
+  }
+  .cta {
+    background: linear-gradient(135deg, #ff006e, #8338ec);
+    color: #fff; font-family: 'Boogaloo', cursive; font-size: 22px;
+    text-align: center; padding: 15px; border-radius: 18px;
+    animation: ctaPulse 2s ease-in-out infinite;
+  }
+  @keyframes ctaPulse {
+    0%,100% { transform: scale(1); box-shadow: 0 8px 30px #ff006e66; }
+    50%      { transform: scale(1.02); box-shadow: 0 12px 50px #ff006eaa; }
+  }
+  .float-notes { position: absolute; animation: floatUp 4s ease-in-out infinite; opacity: 0.6; z-index: 2; }
+  @keyframes floatUp {
+    0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    50%      { transform: translateY(-18px) rotate(15deg); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="inner">
+    <div class="stars" id="stars"></div>
+    <div class="float-notes" style="top:10px;right:14px;font-size:22px;animation-delay:0s">🎵</div>
+    <div class="float-notes" style="top:48px;left:8px;font-size:16px;animation-delay:1s">🎶</div>
+    <div class="float-notes" style="bottom:115px;right:8px;font-size:18px;animation-delay:2s">🎵</div>
+
+    <div class="content">
+      <div class="badge">✨ Te invita ✨</div>
+      <div class="group-name">Las Positivas</div>
+      <div class="presents">presentan una noche de</div>
+      <div class="main-title">KARAOKE<span class="mic-emoji">🎤</span></div>
+
+      <div class="illustration">
+        <svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- BG -->
+          <rect width="420" height="240" fill="#1a0030"/>
+          <!-- Star dots -->
+          <circle cx="25" cy="12" r="1.2" fill="#fff" opacity="0.5"/>
+          <circle cx="85" cy="8" r="1.5" fill="#ffbe0b" opacity="0.6"/>
+          <circle cx="155" cy="18" r="1" fill="#ff006e" opacity="0.5"/>
+          <circle cx="225" cy="9" r="1.5" fill="#fff" opacity="0.4"/>
+          <circle cx="305" cy="16" r="1" fill="#3a86ff" opacity="0.6"/>
+          <circle cx="385" cy="11" r="1.5" fill="#8338ec" opacity="0.5"/>
+          <circle cx="408" cy="28" r="1" fill="#fff" opacity="0.4"/>
+          <!-- Spotlight beams -->
+          <polygon points="42,0 18,188 66,188" fill="#ff006e07"/>
+          <polygon points="120,0 96,188 144,188" fill="#ffbe0b07"/>
+          <polygon points="207,0 183,188 231,188" fill="#8338ec07"/>
+          <polygon points="295,0 271,188 319,188" fill="#3a86ff07"/>
+          <polygon points="376,0 352,188 400,188" fill="#06d6a007"/>
+          <!-- Stage -->
+          <rect x="0" y="192" width="420" height="48" fill="#0d0020"/>
+          <rect x="0" y="188" width="420" height="7" rx="3" fill="#ff006e44"/>
+          <!-- Stage bulbs -->
+          <circle cx="28" cy="191" r="4" fill="#ff006e" opacity="0.7"/>
+          <circle cx="76" cy="191" r="4" fill="#ffbe0b" opacity="0.7"/>
+          <circle cx="124" cy="191" r="4" fill="#3a86ff" opacity="0.7"/>
+          <circle cx="172" cy="191" r="4" fill="#8338ec" opacity="0.7"/>
+          <circle cx="220" cy="191" r="4" fill="#ff006e" opacity="0.7"/>
+          <circle cx="268" cy="191" r="4" fill="#06d6a0" opacity="0.7"/>
+          <circle cx="316" cy="191" r="4" fill="#ffbe0b" opacity="0.7"/>
+          <circle cx="364" cy="191" r="4" fill="#3a86ff" opacity="0.7"/>
+          <circle cx="410" cy="191" r="4" fill="#ff006e" opacity="0.7"/>
+          <!-- Floating notes -->
+          <text x="5" y="55" font-size="16" fill="#ffbe0b" opacity="0.5">♩</text>
+          <text x="398" y="42" font-size="14" fill="#ff006e" opacity="0.5">♪</text>
+          <text x="197" y="22" font-size="13" fill="#3a86ff" opacity="0.5">♫</text>
+          <text x="88" y="30" font-size="12" fill="#8338ec" opacity="0.5">♬</text>
+          <text x="312" y="26" font-size="14" fill="#06d6a0" opacity="0.5">♩</text>
+          <!-- Floor spots -->
+          <ellipse cx="42" cy="208" rx="30" ry="10" fill="#ff006e1a"/>
+          <ellipse cx="120" cy="208" rx="30" ry="10" fill="#ffbe0b1a"/>
+          <ellipse cx="207" cy="208" rx="32" ry="10" fill="#8338ec1a"/>
+          <ellipse cx="295" cy="208" rx="30" ry="10" fill="#3a86ff1a"/>
+          <ellipse cx="376" cy="208" rx="30" ry="10" fill="#06d6a01a"/>
+
+          <!-- ==============================================================
+               CHICA 1 – Piel morena oscura · Cabello afro · Vestido rojo
+               Perrita (chihuahua) con moño rosa
+               ============================================================== -->
+          <!-- Legs -->
+          <rect x="26" y="158" width="12" height="32" rx="6" fill="#3a1505"/>
+          <rect x="41" y="158" width="12" height="32" rx="6" fill="#3a1505"/>
+          <!-- Shoes red -->
+          <ellipse cx="32" cy="190" rx="10" ry="5" fill="#c0392b"/>
+          <ellipse cx="47" cy="190" rx="10" ry="5" fill="#c0392b"/>
+          <!-- Dress -->
+          <rect x="18" y="108" width="42" height="54" rx="13" fill="#e63946"/>
+          <path d="M16,150 Q30,168 42,157 Q54,168 66,150" fill="#e63946"/>
+          <!-- Arms -->
+          <line x1="18" y1="120" x2="2" y2="98" stroke="#3a1505" stroke-width="8" stroke-linecap="round"/>
+          <line x1="60" y1="116" x2="76" y2="100" stroke="#3a1505" stroke-width="8" stroke-linecap="round"/>
+          <!-- Mic -->
+          <rect x="-2" y="85" width="7" height="17" rx="3" fill="#aaa"/>
+          <ellipse cx="1.5" cy="84" rx="7" ry="8" fill="#555"/>
+          <ellipse cx="1.5" cy="84" rx="3.5" ry="4" fill="#888"/>
+          <!-- Neck -->
+          <rect x="31" y="95" width="14" height="15" rx="5" fill="#3a1505"/>
+          <!-- Head -->
+          <circle cx="38" cy="80" r="24" fill="#4a1a06"/>
+          <!-- Afro -->
+          <circle cx="38" cy="63" r="28" fill="#1a0800"/>
+          <circle cx="13" cy="76" r="15" fill="#1a0800"/>
+          <circle cx="63" cy="76" r="15" fill="#1a0800"/>
+          <circle cx="18" cy="60" r="13" fill="#1a0800"/>
+          <circle cx="58" cy="60" r="13" fill="#1a0800"/>
+          <ellipse cx="30" cy="52" rx="7" ry="4" fill="#3d1500" opacity="0.4"/>
+          <!-- Gold earrings -->
+          <circle cx="15" cy="84" r="5" fill="none" stroke="#f4c430" stroke-width="2.5"/>
+          <circle cx="61" cy="84" r="5" fill="none" stroke="#f4c430" stroke-width="2.5"/>
+          <!-- Eyes -->
+          <ellipse cx="31" cy="78" rx="4.5" ry="5.5" fill="#fff"/>
+          <ellipse cx="45" cy="78" rx="4.5" ry="5.5" fill="#fff"/>
+          <circle cx="32" cy="79" r="3" fill="#1a0800"/>
+          <circle cx="46" cy="79" r="3" fill="#1a0800"/>
+          <circle cx="33" cy="78" r="1.2" fill="#fff"/>
+          <circle cx="47" cy="78" r="1.2" fill="#fff"/>
+          <!-- Lashes -->
+          <line x1="27" y1="73" x2="25" y2="70" stroke="#1a0800" stroke-width="1.5"/>
+          <line x1="31" y1="72" x2="31" y2="69" stroke="#1a0800" stroke-width="1.5"/>
+          <line x1="35" y1="73" x2="36" y2="70" stroke="#1a0800" stroke-width="1.5"/>
+          <line x1="41" y1="73" x2="40" y2="70" stroke="#1a0800" stroke-width="1.5"/>
+          <line x1="45" y1="72" x2="45" y2="69" stroke="#1a0800" stroke-width="1.5"/>
+          <line x1="49" y1="73" x2="51" y2="70" stroke="#1a0800" stroke-width="1.5"/>
+          <!-- Blush -->
+          <ellipse cx="24" cy="86" rx="6" ry="3" fill="#c0392b" opacity="0.3"/>
+          <ellipse cx="52" cy="86" rx="6" ry="3" fill="#c0392b" opacity="0.3"/>
+          <!-- Mouth -->
+          <path d="M31,89 Q38,100 45,89" stroke="#7a1000" stroke-width="2" fill="#7a1000" fill-opacity="0.35"/>
+          <!-- Leash -->
+          <path d="M24,162 Q52,172 65,182" stroke="#f4c430" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+          <!-- CHIHUAHUA -->
+          <ellipse cx="78" cy="184" rx="14" ry="10" fill="#d4aa70"/>
+          <circle cx="91" cy="177" r="10" fill="#d4aa70"/>
+          <!-- Big ears -->
+          <ellipse cx="84" cy="167" rx="6" ry="10" fill="#d4aa70" transform="rotate(-20,84,167)"/>
+          <ellipse cx="98" cy="167" rx="6" ry="10" fill="#d4aa70" transform="rotate(20,98,167)"/>
+          <ellipse cx="84" cy="167" rx="3.5" ry="6" fill="#e8c48a" transform="rotate(-20,84,167)" opacity="0.6"/>
+          <ellipse cx="98" cy="167" rx="3.5" ry="6" fill="#e8c48a" transform="rotate(20,98,167)" opacity="0.6"/>
+          <!-- Dog eyes -->
+          <circle cx="87" cy="176" r="3" fill="#2a1000"/>
+          <circle cx="95" cy="176" r="3" fill="#2a1000"/>
+          <circle cx="88" cy="175" r="1.1" fill="#fff"/>
+          <circle cx="96" cy="175" r="1.1" fill="#fff"/>
+          <!-- Nose -->
+          <ellipse cx="91" cy="180" rx="2.5" ry="1.5" fill="#5a2800"/>
+          <!-- Tongue -->
+          <path d="M89,182 Q91,186 93,182" stroke="#e07070" stroke-width="1" fill="#e07070"/>
+          <!-- Legs -->
+          <rect x="68" y="191" width="7" height="9" rx="3" fill="#d4aa70"/>
+          <rect x="78" y="191" width="7" height="9" rx="3" fill="#d4aa70"/>
+          <!-- Tail -->
+          <path d="M64,182 Q58,170 62,162" stroke="#d4aa70" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <!-- Bow on head -->
+          <path d="M87,167 Q91,160 95,167 Q91,171 87,167Z" fill="#ff006e"/>
+          <circle cx="91" cy="167" r="2.5" fill="#c0004e"/>
+
+          <!-- ==============================================================
+               CHICA 2 – Piel trigueña · Atuendo gym · Coleta alta
+               ============================================================== -->
+          <!-- Leggins -->
+          <rect x="104" y="155" width="13" height="35" rx="6" fill="#1a1a1a"/>
+          <rect x="120" y="155" width="13" height="35" rx="6" fill="#1a1a1a"/>
+          <line x1="110" y1="158" x2="110" y2="187" stroke="#ff006e" stroke-width="2.5" opacity="0.7"/>
+          <line x1="126" y1="158" x2="126" y2="187" stroke="#ff006e" stroke-width="2.5" opacity="0.7"/>
+          <!-- Sneakers -->
+          <rect x="101" y="186" width="20" height="9" rx="4" fill="#fff"/>
+          <rect x="101" y="186" width="20" height="5" rx="3" fill="#ff006e"/>
+          <rect x="118" y="186" width="20" height="9" rx="4" fill="#fff"/>
+          <rect x="118" y="186" width="20" height="5" rx="3" fill="#ff006e"/>
+          <!-- Sports top + shorts -->
+          <rect x="102" y="108" width="40" height="22" rx="10" fill="#cc0055"/>
+          <rect x="99" y="130" width="46" height="28" rx="10" fill="#111"/>
+          <!-- Shorts stripe -->
+          <line x1="102" y1="133" x2="102" y2="155" stroke="#ff006e" stroke-width="2" opacity="0.5"/>
+          <line x1="142" y1="133" x2="142" y2="155" stroke="#ff006e" stroke-width="2" opacity="0.5"/>
+          <!-- Arms -->
+          <line x1="102" y1="118" x2="84" y2="95" stroke="#8B5E3C" stroke-width="8" stroke-linecap="round"/>
+          <line x1="142" y1="115" x2="158" y2="100" stroke="#8B5E3C" stroke-width="8" stroke-linecap="round"/>
+          <!-- Mic -->
+          <rect x="80" y="82" width="7" height="18" rx="3" fill="#bbb"/>
+          <ellipse cx="83.5" cy="81" rx="7" ry="8" fill="#444"/>
+          <ellipse cx="83.5" cy="81" rx="3.5" ry="4" fill="#777"/>
+          <!-- Flex fist -->
+          <circle cx="161" cy="98" r="8" fill="#8B5E3C"/>
+          <!-- Neck -->
+          <rect x="114" y="94" width="14" height="16" rx="5" fill="#8B5E3C"/>
+          <!-- Head -->
+          <circle cx="121" cy="79" r="24" fill="#8B5E3C"/>
+          <!-- Hair ponytail up -->
+          <path d="M98,70 Q97,50 121,48 Q145,50 144,70 Q136,56 106,56Z" fill="#2c1a08"/>
+          <circle cx="121" cy="48" r="9" fill="#2c1a08"/>
+          <path d="M121,40 Q134,22 132,8" stroke="#2c1a08" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <path d="M121,40 Q140,28 148,14" stroke="#2c1a08" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Hair tie -->
+          <circle cx="121" cy="40" r="6" fill="#ff006e"/>
+          <!-- Headband sweat -->
+          <rect x="100" y="66" width="42" height="9" rx="4" fill="#ffbe0b" opacity="0.95"/>
+          <rect x="117" y="66" width="8" height="9" rx="3" fill="#ff006e"/>
+          <!-- Earbuds -->
+          <circle cx="98" cy="82" r="4.5" fill="#fff" opacity="0.95"/>
+          <line x1="98" y1="86" x2="95" y2="96" stroke="#ccc" stroke-width="1.5" opacity="0.7"/>
+          <!-- Eyes -->
+          <ellipse cx="113" cy="77" rx="5" ry="5.5" fill="#fff"/>
+          <ellipse cx="129" cy="77" rx="5" ry="5.5" fill="#fff"/>
+          <circle cx="114" cy="78" r="3" fill="#2c1a08"/>
+          <circle cx="130" cy="78" r="3" fill="#2c1a08"/>
+          <circle cx="115" cy="77" r="1.2" fill="#fff"/>
+          <circle cx="131" cy="77" r="1.2" fill="#fff"/>
+          <!-- Blush -->
+          <ellipse cx="105" cy="85" rx="6" ry="3" fill="#d07050" opacity="0.4"/>
+          <ellipse cx="137" cy="85" rx="6" ry="3" fill="#d07050" opacity="0.4"/>
+          <!-- Mouth -->
+          <path d="M112,88 Q121,99 130,88" stroke="#5c2000" stroke-width="2" fill="#5c2000" fill-opacity="0.3"/>
+          <!-- Chain necklace -->
+          <path d="M108,100 Q121,108 134,100" stroke="#f4c430" stroke-width="2" fill="none" opacity="0.8"/>
+
+          <!-- ==============================================================
+               CHICA 3 – Piel blanca · Ojos VERDES · Cabello rubio · Shih Tzu
+               ============================================================== -->
+          <!-- Legs -->
+          <rect x="192" y="160" width="13" height="30" rx="6" fill="#f5e8d8"/>
+          <rect x="208" y="160" width="13" height="30" rx="6" fill="#f5e8d8"/>
+          <!-- Heels pink -->
+          <ellipse cx="198" cy="192" rx="10" ry="5" fill="#e91e8c"/>
+          <rect x="201" y="187" width="4" height="9" rx="2" fill="#c0166e"/>
+          <ellipse cx="214" cy="192" rx="10" ry="5" fill="#e91e8c"/>
+          <rect x="217" y="187" width="4" height="9" rx="2" fill="#c0166e"/>
+          <!-- Floral dress -->
+          <path d="M184,114 Q174,162 180,192 L232,192 Q238,162 228,114Z" fill="#e91e8c" opacity="0.9"/>
+          <!-- Floral dots -->
+          <circle cx="192" cy="130" r="4" fill="#fff" opacity="0.5"/>
+          <circle cx="201" cy="148" r="3.5" fill="#ffbe0b" opacity="0.5"/>
+          <circle cx="214" cy="128" r="4" fill="#fff" opacity="0.5"/>
+          <circle cx="221" cy="150" r="3" fill="#ffbe0b" opacity="0.5"/>
+          <circle cx="197" cy="165" r="3.5" fill="#fff" opacity="0.4"/>
+          <circle cx="212" cy="168" r="3" fill="#ffbe0b" opacity="0.4"/>
+          <!-- Bodice -->
+          <rect x="187" y="107" width="38" height="32" rx="11" fill="#c0166e"/>
+          <!-- Arms -->
+          <line x1="187" y1="117" x2="166" y2="92" stroke="#f5e8d8" stroke-width="8" stroke-linecap="round"/>
+          <line x1="225" y1="115" x2="245" y2="100" stroke="#f5e8d8" stroke-width="8" stroke-linecap="round"/>
+          <!-- Mic -->
+          <rect x="161" y="77" width="7" height="20" rx="3" fill="#bbb"/>
+          <ellipse cx="164.5" cy="76" rx="8" ry="9" fill="#ff006e"/>
+          <ellipse cx="164.5" cy="76" rx="4" ry="4.5" fill="#c0006e"/>
+          <!-- Neck -->
+          <rect x="198" y="96" width="14" height="14" rx="5" fill="#f5e8d8"/>
+          <!-- Head -->
+          <circle cx="205" cy="80" r="25" fill="#f5e8d8"/>
+          <!-- Blonde long wavy hair -->
+          <path d="M181,71 Q179,47 205,45 Q231,47 229,71 Q221,54 189,54Z" fill="#f4d03f"/>
+          <path d="M181,71 Q172,108 176,150" stroke="#f4d03f" stroke-width="11" stroke-linecap="round" fill="none"/>
+          <path d="M229,71 Q238,108 234,150" stroke="#f4d03f" stroke-width="11" stroke-linecap="round" fill="none"/>
+          <path d="M179,90 Q175,106 179,122" stroke="#e8c520" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M231,88 Q235,104 231,120" stroke="#e8c520" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Highlight -->
+          <path d="M193,49 Q205,43 217,49" stroke="#fffde0" stroke-width="3" fill="none" opacity="0.7"/>
+          <!-- Hair clip flower -->
+          <circle cx="229" cy="67" r="8" fill="#e91e8c"/>
+          <circle cx="229" cy="67" r="4.5" fill="#ffbe0b"/>
+          <!-- GREEN EYES -->
+          <ellipse cx="196" cy="76" rx="5.5" ry="6.5" fill="#fff"/>
+          <ellipse cx="214" cy="76" rx="5.5" ry="6.5" fill="#fff"/>
+          <!-- Iris green -->
+          <circle cx="197" cy="77" r="4" fill="#1a8a1a"/>
+          <circle cx="215" cy="77" r="4" fill="#1a8a1a"/>
+          <!-- Bright green inner -->
+          <circle cx="197" cy="77" r="2.5" fill="#3dcc3d"/>
+          <circle cx="215" cy="77" r="2.5" fill="#3dcc3d"/>
+          <!-- Pupil -->
+          <circle cx="197" cy="77" r="1.5" fill="#0a0a0a"/>
+          <circle cx="215" cy="77" r="1.5" fill="#0a0a0a"/>
+          <!-- Eye shine -->
+          <circle cx="198" cy="76" r="1" fill="#fff"/>
+          <circle cx="216" cy="76" r="1" fill="#fff"/>
+          <!-- Long lashes -->
+          <line x1="190" y1="70" x2="188" y2="67" stroke="#333" stroke-width="1.5"/>
+          <line x1="194" y1="69" x2="193" y2="66" stroke="#333" stroke-width="1.5"/>
+          <line x1="198" y1="69" x2="198" y2="66" stroke="#333" stroke-width="1.5"/>
+          <line x1="202" y1="70" x2="203" y2="67" stroke="#333" stroke-width="1.5"/>
+          <line x1="209" y1="70" x2="208" y2="67" stroke="#333" stroke-width="1.5"/>
+          <line x1="213" y1="69" x2="213" y2="66" stroke="#333" stroke-width="1.5"/>
+          <line x1="217" y1="69" x2="218" y2="66" stroke="#333" stroke-width="1.5"/>
+          <line x1="221" y1="70" x2="222" y2="67" stroke="#333" stroke-width="1.5"/>
+          <!-- Blush rosy -->
+          <ellipse cx="187" cy="84" rx="7" ry="3.5" fill="#ffb3c6" opacity="0.55"/>
+          <ellipse cx="223" cy="84" rx="7" ry="3.5" fill="#ffb3c6" opacity="0.55"/>
+          <!-- Mouth -->
+          <path d="M196,91 Q205,103 214,91" stroke="#c0166e" stroke-width="2.5" fill="#e91e8c" fill-opacity="0.3"/>
+          <!-- Pearl necklace -->
+          <circle cx="193" cy="100" r="2.2" fill="#fff" opacity="0.9"/>
+          <circle cx="198" cy="104" r="2.2" fill="#fff" opacity="0.9"/>
+          <circle cx="204" cy="106" r="2.2" fill="#fff" opacity="0.9"/>
+          <circle cx="210" cy="106" r="2.2" fill="#fff" opacity="0.9"/>
+          <circle cx="216" cy="104" r="2.2" fill="#fff" opacity="0.9"/>
+          <circle cx="221" cy="100" r="2.2" fill="#fff" opacity="0.9"/>
+          <!-- Leash to Shih Tzu -->
+          <path d="M232,172 Q248,178 256,186" stroke="#e91e8c" stroke-width="1.5" fill="none"/>
+          <!-- SHIH TZU -->
+          <ellipse cx="266" cy="188" rx="17" ry="12" fill="#f5f0e2"/>
+          <!-- Fluffy body -->
+          <ellipse cx="260" cy="183" rx="9" ry="7" fill="#fff" opacity="0.6"/>
+          <ellipse cx="272" cy="182" rx="9" ry="7" fill="#e8d8b0" opacity="0.5"/>
+          <!-- Head round -->
+          <circle cx="280" cy="178" r="14" fill="#f5f0e2"/>
+          <!-- Face fluffy fur -->
+          <circle cx="275" cy="173" r="8" fill="#fff" opacity="0.75"/>
+          <circle cx="283" cy="173" r="8" fill="#e8d8b0" opacity="0.6"/>
+          <!-- Ears long fluffy -->
+          <ellipse cx="268" cy="172" rx="6" ry="13" fill="#c8a870" transform="rotate(-12,268,172)"/>
+          <ellipse cx="292" cy="172" rx="6" ry="13" fill="#c8a870" transform="rotate(12,292,172)"/>
+          <ellipse cx="268" cy="172" rx="3.5" ry="9" fill="#d4b888" transform="rotate(-12,268,172)" opacity="0.6"/>
+          <ellipse cx="292" cy="172" rx="3.5" ry="9" fill="#d4b888" transform="rotate(12,292,172)" opacity="0.6"/>
+          <!-- Big shih tzu eyes -->
+          <circle cx="275" cy="177" r="4.5" fill="#1a0800"/>
+          <circle cx="285" cy="177" r="4.5" fill="#1a0800"/>
+          <circle cx="276.5" cy="175.5" r="1.8" fill="#fff"/>
+          <circle cx="286.5" cy="175.5" r="1.8" fill="#fff"/>
+          <!-- Flat wide nose -->
+          <ellipse cx="280" cy="183" rx="4" ry="2.5" fill="#7a5030"/>
+          <!-- Tongue -->
+          <path d="M277,186 Q280,192 283,186" stroke="#e87a7a" stroke-width="1.2" fill="#e87a7a"/>
+          <!-- Paws -->
+          <rect x="256" y="196" width="8" height="10" rx="4" fill="#f5f0e2"/>
+          <rect x="267" y="196" width="8" height="10" rx="4" fill="#f5f0e2"/>
+          <!-- Top knot bow pink -->
+          <path d="M275,164 Q280,156 285,164 Q280,169 275,164Z" fill="#e91e8c"/>
+          <circle cx="280" cy="164" r="3.5" fill="#c0166e"/>
+
+          <!-- ==============================================================
+               CHICA 4 – Piel morena · Profesora · Bun · Gafas · Libro · Regla
+               ============================================================== -->
+          <!-- Skirt -->
+          <path d="M279,149 Q272,190 278,194 L314,194 Q320,190 313,149Z" fill="#2c3e7a"/>
+          <line x1="281" y1="155" x2="279" y2="190" stroke="#3a86ff" stroke-width="1" opacity="0.35"/>
+          <line x1="288" y1="153" x2="286" y2="192" stroke="#3a86ff" stroke-width="1" opacity="0.35"/>
+          <line x1="296" y1="152" x2="296" y2="194" stroke="#3a86ff" stroke-width="1" opacity="0.35"/>
+          <line x1="305" y1="153" x2="307" y2="192" stroke="#3a86ff" stroke-width="1" opacity="0.35"/>
+          <line x1="312" y1="155" x2="314" y2="190" stroke="#3a86ff" stroke-width="1" opacity="0.35"/>
+          <!-- Shoes low heel -->
+          <ellipse cx="284" cy="194" rx="11" ry="5" fill="#1a1a3a"/>
+          <ellipse cx="308" cy="194" rx="11" ry="5" fill="#1a1a3a"/>
+          <!-- Blouse elegant -->
+          <rect x="278" y="104" width="40" height="48" rx="12" fill="#f8f0e0"/>
+          <path d="M293,104 L296,118 L299,104" fill="#e8dfd0"/>
+          <circle cx="296" cy="112" r="2" fill="#c0a060"/>
+          <circle cx="296" cy="121" r="2" fill="#c0a060"/>
+          <circle cx="296" cy="130" r="2" fill="#c0a060"/>
+          <!-- Arms -->
+          <line x1="278" y1="116" x2="260" y2="96" stroke="#4a1a06" stroke-width="8" stroke-linecap="round"/>
+          <line x1="318" y1="118" x2="335" y2="106" stroke="#4a1a06" stroke-width="8" stroke-linecap="round"/>
+          <!-- Ruler/mic left -->
+          <rect x="248" y="76" width="6" height="30" rx="2" fill="#f4d03f"/>
+          <line x1="251" y1="80" x2="251" y2="84" stroke="#c0a000" stroke-width="1.2"/>
+          <line x1="251" y1="87" x2="251" y2="91" stroke="#c0a000" stroke-width="1.2"/>
+          <line x1="251" y1="94" x2="251" y2="98" stroke="#c0a000" stroke-width="1.2"/>
+          <ellipse cx="251" cy="75" rx="5.5" ry="6" fill="#555"/>
+          <ellipse cx="251" cy="75" rx="2.5" ry="3" fill="#888"/>
+          <!-- Book right hand -->
+          <rect x="333" y="98" width="24" height="30" rx="3" fill="#e63946"/>
+          <rect x="333" y="98" width="5" height="30" rx="2" fill="#c0392b"/>
+          <line x1="340" y1="107" x2="354" y2="107" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+          <line x1="340" y1="113" x2="354" y2="113" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+          <line x1="340" y1="119" x2="354" y2="119" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+          <text x="336" y="128" font-size="8" fill="#ffbe0b" font-weight="bold">ABC</text>
+          <!-- Neck -->
+          <rect x="288" y="91" width="14" height="15" rx="5" fill="#4a1a06"/>
+          <!-- Head -->
+          <circle cx="295" cy="76" r="24" fill="#4a1a06"/>
+          <!-- Hair elegant updo -->
+          <path d="M272,68 Q270,50 295,48 Q320,50 318,68 Q310,55 280,55Z" fill="#1a0800"/>
+          <circle cx="295" cy="48" r="15" fill="#1a0800"/>
+          <circle cx="295" cy="48" r="10" fill="#2c1800"/>
+          <path d="M288,46 Q295,40 302,46 Q296,52 288,46" stroke="#3d2200" stroke-width="2" fill="none"/>
+          <path d="M272,68 Q268,84 270,100" stroke="#1a0800" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M318,68 Q322,84 320,100" stroke="#1a0800" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <!-- Hair pins gold -->
+          <line x1="286" y1="53" x2="280" y2="45" stroke="#f4c430" stroke-width="2"/>
+          <circle cx="280" cy="44" r="3" fill="#f4c430"/>
+          <line x1="304" y1="53" x2="310" y2="45" stroke="#f4c430" stroke-width="2"/>
+          <circle cx="310" cy="44" r="3" fill="#f4c430"/>
+          <!-- RECTANGULAR TEACHER GLASSES -->
+          <rect x="283" y="70" width="11" height="9" rx="3" fill="none" stroke="#7a3800" stroke-width="2.5"/>
+          <rect x="297" y="70" width="11" height="9" rx="3" fill="none" stroke="#7a3800" stroke-width="2.5"/>
+          <line x1="294" y1="74.5" x2="297" y2="74.5" stroke="#7a3800" stroke-width="2"/>
+          <line x1="283" y1="74.5" x2="280" y2="72" stroke="#7a3800" stroke-width="2"/>
+          <line x1="308" y1="74.5" x2="311" y2="72" stroke="#7a3800" stroke-width="2"/>
+          <line x1="285" y1="72" x2="289" y2="72" stroke="#fff" stroke-width="1" opacity="0.45"/>
+          <line x1="299" y1="72" x2="303" y2="72" stroke="#fff" stroke-width="1" opacity="0.45"/>
+          <!-- Eyes behind glasses -->
+          <ellipse cx="289" cy="74.5" rx="4" ry="3.5" fill="#fff"/>
+          <ellipse cx="302.5" cy="74.5" rx="4" ry="3.5" fill="#fff"/>
+          <circle cx="289.5" cy="75" r="2.2" fill="#1a0800"/>
+          <circle cx="303" cy="75" r="2.2" fill="#1a0800"/>
+          <circle cx="290.3" cy="74.3" r="0.9" fill="#fff"/>
+          <circle cx="303.8" cy="74.3" r="0.9" fill="#fff"/>
+          <!-- Blush -->
+          <ellipse cx="278" cy="83" rx="6" ry="3" fill="#c0392b" opacity="0.28"/>
+          <ellipse cx="312" cy="83" rx="6" ry="3" fill="#c0392b" opacity="0.28"/>
+          <!-- Mouth -->
+          <path d="M286,87 Q295,97 304,87" stroke="#5c1800" stroke-width="2" fill="#5c1800" fill-opacity="0.3"/>
+          <!-- Pearl earrings -->
+          <circle cx="272" cy="80" r="3.5" fill="#f8f0e0" stroke="#c0a060" stroke-width="1"/>
+          <circle cx="318" cy="80" r="3.5" fill="#f8f0e0" stroke="#c0a060" stroke-width="1"/>
+
+          <!-- ==============================================================
+               CHICA 5 – Piel blanca · Cabello café claro · Abogada
+               Traje sastre · Corbata · Maletín · Balanza justicia
+               ============================================================== -->
+          <!-- Suit pants -->
+          <rect x="363" y="156" width="14" height="36" rx="7" fill="#1a1a2e"/>
+          <rect x="380" y="156" width="14" height="36" rx="7" fill="#1a1a2e"/>
+          <!-- Formal shoes -->
+          <ellipse cx="370" cy="194" rx="12" ry="5" fill="#0d0d1a"/>
+          <ellipse cx="387" cy="194" rx="12" ry="5" fill="#0d0d1a"/>
+          <ellipse cx="368" cy="192" rx="5" ry="2" fill="#333" opacity="0.4"/>
+          <!-- Suit jacket -->
+          <rect x="360" y="103" width="44" height="56" rx="12" fill="#1a1a2e"/>
+          <!-- Lapels -->
+          <path d="M382,106 L372,124 L360,106Z" fill="#16213e"/>
+          <path d="M382,106 L392,124 L404,106Z" fill="#16213e"/>
+          <!-- White shirt -->
+          <rect x="376" y="106" width="10" height="32" rx="4" fill="#f0f0f0"/>
+          <!-- Tie burgundy -->
+          <path d="M379,108 L381,130 L383,108 L381,106Z" fill="#8b0000"/>
+          <!-- Pocket square -->
+          <polygon points="393,108 398,108 395,115" fill="#fff" opacity="0.85"/>
+          <!-- Arms -->
+          <line x1="360" y1="116" x2="341" y2="99" stroke="#f0e6d3" stroke-width="8" stroke-linecap="round"/>
+          <line x1="404" y1="118" x2="418" y2="106" stroke="#f0e6d3" stroke-width="8" stroke-linecap="round"/>
+          <!-- Legal papers + mic (left) -->
+          <rect x="328" y="82" width="9" height="26" rx="3" fill="#f0f0e8"/>
+          <line x1="329" y1="87" x2="337" y2="87" stroke="#888" stroke-width="1.2"/>
+          <line x1="329" y1="92" x2="337" y2="92" stroke="#888" stroke-width="1.2"/>
+          <line x1="329" y1="97" x2="337" y2="97" stroke="#888" stroke-width="1.2"/>
+          <ellipse cx="332.5" cy="81" rx="7" ry="7.5" fill="#8b0000"/>
+          <ellipse cx="332.5" cy="81" rx="3.5" ry="4" fill="#aa2020"/>
+          <!-- Briefcase (right) -->
+          <rect x="414" y="98" width="26" height="20" rx="4" fill="#5c3a1e"/>
+          <rect x="420" y="93" width="15" height="7" rx="3" fill="none" stroke="#5c3a1e" stroke-width="2.5"/>
+          <line x1="414" y1="108" x2="440" y2="108" stroke="#7a5030" stroke-width="1.5"/>
+          <rect x="422" y="104" width="7" height="8" rx="2" fill="#f4c430"/>
+          <!-- Neck -->
+          <rect x="373" y="90" width="14" height="15" rx="5" fill="#f0e6d3"/>
+          <!-- Head -->
+          <circle cx="380" cy="74" r="25" fill="#f0e6d3"/>
+          <!-- LIGHT BROWN HAIR - professional low bun side swept -->
+          <path d="M356,66 Q354,44 380,42 Q406,44 404,66 Q396,50 364,50Z" fill="#7a5210"/>
+          <path d="M356,66 Q350,90 353,118" stroke="#7a5210" stroke-width="10" stroke-linecap="round" fill="none"/>
+          <path d="M404,66 Q408,88 406,110" stroke="#7a5210" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <!-- Side bun (elegant) -->
+          <circle cx="356" cy="116" r="10" fill="#7a5210"/>
+          <circle cx="356" cy="116" r="7" fill="#8b6220"/>
+          <!-- Hair highlights -->
+          <path d="M368,46 Q380,40 392,46" stroke="#c8a030" stroke-width="2.5" fill="none" opacity="0.55"/>
+          <!-- Clip hairpin -->
+          <rect x="400" y="63" width="12" height="5" rx="2" fill="#8b0000"/>
+          <!-- OVAL LAWYER GLASSES (thin) -->
+          <ellipse cx="372" cy="72" rx="8" ry="6" fill="none" stroke="#222" stroke-width="2"/>
+          <ellipse cx="388" cy="72" rx="8" ry="6" fill="none" stroke="#222" stroke-width="2"/>
+          <line x1="380" y1="72" x2="380" y2="72" stroke="#222" stroke-width="2"/>
+          <line x1="364" y1="72" x2="361" y2="70" stroke="#222" stroke-width="2"/>
+          <line x1="396" y1="72" x2="399" y2="70" stroke="#222" stroke-width="2"/>
+          <line x1="366" y1="69" x2="370" y2="69" stroke="#fff" stroke-width="1" opacity="0.4"/>
+          <line x1="382" y1="69" x2="386" y2="69" stroke="#fff" stroke-width="1" opacity="0.4"/>
+          <!-- Eyes hazel/dark -->
+          <ellipse cx="372" cy="72" rx="5" ry="4.5" fill="#fff"/>
+          <ellipse cx="388" cy="72" rx="5" ry="4.5" fill="#fff"/>
+          <circle cx="373" cy="72.5" r="2.8" fill="#3a2200"/>
+          <circle cx="389" cy="72.5" r="2.8" fill="#3a2200"/>
+          <circle cx="374" cy="71.7" r="1.1" fill="#fff"/>
+          <circle cx="390" cy="71.7" r="1.1" fill="#fff"/>
+          <!-- Lashes elegant -->
+          <line x1="366" y1="67" x2="365" y2="64" stroke="#222" stroke-width="1.5"/>
+          <line x1="371" y1="66" x2="371" y2="63" stroke="#222" stroke-width="1.5"/>
+          <line x1="376" y1="67" x2="377" y2="64" stroke="#222" stroke-width="1.5"/>
+          <line x1="382" y1="67" x2="381" y2="64" stroke="#222" stroke-width="1.5"/>
+          <line x1="387" y1="66" x2="387" y2="63" stroke="#222" stroke-width="1.5"/>
+          <line x1="392" y1="67" x2="393" y2="64" stroke="#222" stroke-width="1.5"/>
+          <!-- Blush minimal -->
+          <ellipse cx="363" cy="80" rx="6" ry="2.5" fill="#f5a0a0" opacity="0.3"/>
+          <ellipse cx="396" cy="80" rx="6" ry="2.5" fill="#f5a0a0" opacity="0.3"/>
+          <!-- Mouth confident -->
+          <path d="M372,84 Q380,93 388,84" stroke="#7a2020" stroke-width="2" fill="#7a2020" fill-opacity="0.25"/>
+          <!-- Gold necklace elegant -->
+          <path d="M366,96 Q380,104 394,96" stroke="#f4c430" stroke-width="2" fill="none" opacity="0.85"/>
+          <circle cx="380" cy="103" r="3.5" fill="#f4c430" opacity="0.9"/>
+          <!-- Earrings red stud -->
+          <circle cx="356" cy="78" r="3.5" fill="#8b0000"/>
+          <circle cx="405" cy="78" r="3.5" fill="#8b0000"/>
+          <!-- Justice scales tiny -->
+          <line x1="415" y1="174" x2="415" y2="194" stroke="#f4c430" stroke-width="2.5"/>
+          <line x1="407" y1="177" x2="423" y2="177" stroke="#f4c430" stroke-width="2"/>
+          <circle cx="415" cy="174" r="2.5" fill="#f4c430"/>
+          <!-- Left pan -->
+          <path d="M407,177 Q405,184 407,188 Q409,184 411,188 Q409,178 407,177" stroke="#f4c430" stroke-width="1.2" fill="#f4c43033"/>
+          <!-- Right pan -->
+          <path d="M423,177 Q421,184 423,188 Q425,184 427,188 Q425,178 423,177" stroke="#f4c430" stroke-width="1.2" fill="#f4c43033"/>
+
+        </svg>
+      </div>
+
+      <!-- Info pills -->
+      <div class="info-grid">
+        <div class="info-pill">
+          <div class="info-label">📅 Fecha</div>
+          <div class="info-value big">14 Mar</div>
+          <div style="color:#aaa;font-size:12px;">2026 · Sábado</div>
+        </div>
+        <div class="info-pill">
+          <div class="info-label">🎤 Evento</div>
+          <div class="info-value">Noche de</div>
+          <div class="info-value" style="color:#ff006e;">Karaoke</div>
+        </div>
+      </div>
+
+      <div class="note-ribbon">
+        <span>🎶</span> ¡Ven a cantar sin miedo! <span>🎶</span><br>
+        <small style="color:#c9b8ff;font-weight:400;">La voz perfecta la pones tú 💜</small>
+      </div>
+
+      <div class="cta">¡NO FALTES! 🌟✨💃</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const sc = document.getElementById('stars');
+  const cl = ['#ff006e','#ffbe0b','#3a86ff','#8338ec','#fb5607','#fff','#06d6a0'];
+  for(let i=0;i<35;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.background=cl[Math.floor(Math.random()*cl.length)];
+    s.style.animationDelay=(Math.random()*3)+'s';
+    s.style.animationDuration=(1.5+Math.random()*2.5)+'s';
+    sc.appendChild(s);
+  }
+</script>
+</body>
+</html>
